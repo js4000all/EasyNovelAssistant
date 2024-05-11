@@ -1,8 +1,9 @@
-﻿import tkinter as tk
+﻿import typing as ty
+import tkinter as tk
 from tkinter import scrolledtext
 
 from const import Const
-
+import util_textarea as uta
 
 class InputArea:
     def __init__(self, parent, ctx):
@@ -49,12 +50,7 @@ class InputArea:
 
     def get_comment_removed_text(self):
         text = self.get_text()
-        lines = text.splitlines()
-        new_lines = []
-        for line in lines:
-            if line.startswith("//"):
-                continue
-            new_lines.append(line)
+        new_lines: ty.Iterator[str] = uta.remove_comment_lines(lines=text.splitlines())
         result = "\n".join(new_lines)
         if text.endswith("\n"):  # splitlines は末尾改行を無視するため
             result += "\n"
